@@ -10,12 +10,17 @@ public class BankAccount {
 
   public double debit(double amount) {
     if (balance < amount) {
-      amount = balance;
+      return 0.0;
     }
 
     balance -= amount;
     return amount;
   }
+
+  public double getBalance() {
+    return this.balance;
+  }
+
 
 }
 
