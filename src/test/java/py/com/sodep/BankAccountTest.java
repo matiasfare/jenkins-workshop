@@ -12,4 +12,11 @@ public class BankAccountTest {
         double amount = account.debit(5.0);
         Assert.assertEquals(5.0, account.getBalance());
     }
+
+    @Test
+    public void testDebitWithNotEnoughBalance() {
+        BankAccount account = new BankAccount(10.0);
+        double amount = account.debit(15.0);
+        Assert.assertEquals(10.0, account.getBalance());
+    }
 }
