@@ -1,5 +1,6 @@
 package py.com.sodep;
 
+import java.io.FileNotFoundException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,6 +13,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import oracle.jdbc.OracleTypes;
+import py.com.sodep.utils.CsvHelper;
 
 @SpringBootApplication
 public class SqlApplication implements CommandLineRunner {
@@ -43,16 +45,16 @@ public class SqlApplication implements CommandLineRunner {
 		getUsers(conn);
 	}
 
-	//	SQL> var rc refcursor
-	//	SQL> execute myproc(:rc)
+	//	SQL> var result refcursor
+	//	SQL> execute get_users(:result)
 	//
 	//	PL/SQL procedure successfully completed.
 	//
-	//	SQL> print rc	
-	public void getUsers(Connection dbConnection) throws SQLException {
+	//	SQL> print result
+	public void getUsers(Connection dbConnection) throws SQLException, FileNotFoundException {
+		
 		String getDBUSERCursorSql = "{call get_users(?)}";
 		CallableStatement callableStatement = dbConnection.prepareCall(getDBUSERCursorSql);
-		//callableStatement.setString(1, "mkyong");
 		callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
 
 		// execute getDBUSERCursor store procedure
@@ -61,12 +63,8 @@ public class SqlApplication implements CommandLineRunner {
 		// get cursor and cast it to ResultSet
 		ResultSet rs = (ResultSet) callableStatement.getObject(1);
 
-		// loop it like normal
-		while (rs.next()) {
-			Integer userId = rs.getInt("ID");
-			String userName = rs.getString("USERNAME");
-			System.out.println("ID: "+ userId + ", Username: " + userName);
-		}
+		// Convierte el resultset a un CSV
+		CsvHelper.convertToCsv(rs, "users.csv");
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
