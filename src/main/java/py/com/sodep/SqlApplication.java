@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -20,19 +21,6 @@ public class SqlApplication implements CommandLineRunner {
 
 	@Autowired
 	private JdbcProperties props;
-	
-	private static void callStoredProcedure(Connection conn) throws SQLException {
-		CallableStatement ocs = conn.prepareCall("{? = call acpks_stmt_gen.fn_stmt_gen(?,?,?,?,?,?)}");
-		ocs.registerOutParameter(1, java.sql.Types.ARRAY);
-		ocs.setString(2, "144000014");
-		ocs.setString(3, "RET");
-		ocs.setString(4, "N");
-		ocs.setString(5, "3");
-		ocs.setNull(6, java.sql.Types.DATE);
-		ocs.setNull(7, java.sql.Types.DATE);
-
-		ocs.executeUpdate();
-	}
 
 	@Override
 	public void run(String... arg0) throws Exception {
@@ -45,24 +33,14 @@ public class SqlApplication implements CommandLineRunner {
 		getUsers(conn);
 	}
 
-	//	SQL> var result refcursor
-	//	SQL> execute get_users(:result)
-	//
-	//	PL/SQL procedure successfully completed.
-	//
-	//	SQL> print result
+	//	SQL> 
 	public void getUsers(Connection dbConnection) throws SQLException, FileNotFoundException {
 		
-		String getDBUSERCursorSql = "{call get_users(?)}";
-		CallableStatement callableStatement = dbConnection.prepareCall(getDBUSERCursorSql);
-		callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
-
-		// execute getDBUSERCursor store procedure
-		callableStatement.executeUpdate();
-
-		// get cursor and cast it to ResultSet
-		ResultSet rs = (ResultSet) callableStatement.getObject(1);
-
+		String query = "select * from LIBPAGOS_USERS";
+		Statement stmt = dbConnection.createStatement();
+		
+		ResultSet rs = stmt.executeQuery(query);
+		
 		// Convierte el resultset a un CSV
 		CsvHelper.convertToCsv(rs, "users.csv");
 	}
