@@ -41,6 +41,8 @@ public class SqlApplication implements CommandLineRunner {
 		ResultSet rs = stmt.executeQuery(query);
 		
 		// TODO Convertir el resultado a un CSV
+		// El nombre del archivo CSV generado tiene que ser mi nombre
+		// Ejemplo; rvillalba.csv
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
