@@ -1,7 +1,6 @@
 package py.com.sodep;
 
 import java.io.FileNotFoundException;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -13,7 +12,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import oracle.jdbc.OracleTypes;
 import py.com.sodep.utils.CsvHelper;
 
 @SpringBootApplication
@@ -33,7 +31,6 @@ public class SqlApplication implements CommandLineRunner {
 		getUsers(conn);
 	}
 
-	//	SQL> 
 	public void getUsers(Connection dbConnection) throws SQLException, FileNotFoundException {
 		
 		String query = "select * from LIBPAGOS_USERS";
@@ -43,6 +40,8 @@ public class SqlApplication implements CommandLineRunner {
 		
 		// Convierte el resultset a un CSV
 		CsvHelper.convertToCsv(rs, "users.csv");
+		
+		System.out.println("Archivo generado con éxito");
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
