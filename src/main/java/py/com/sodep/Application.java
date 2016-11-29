@@ -1,9 +1,9 @@
 package py.com.sodep;
 
 public class Application {
-   public static void main(String[] args) {
-      for (int i = 1; i < 11; i++) {
-        System.out.println(i + ") Hola, Mundo");
-      }
-   }
+//   public static void main(String[] args) {
+//      for (int i = 1; i < 11; i++) {
+//        System.out.println(i + ") Hola, Mundo");
+//      }
+//   }
 }
