@@ -12,8 +12,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import py.com.sodep.utils.CsvHelper;
-
 @SpringBootApplication
 public class SqlApplication implements CommandLineRunner {
 
@@ -22,26 +20,27 @@ public class SqlApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... arg0) throws Exception {
-	
 		Connection conn;
-
+		
 		Class.forName(props.getDriverClass());
+		
 		conn = DriverManager.getConnection(props.getUrl(), props.getUser(), props.getPassword());
+		
 		System.out.println("Connection was successfull");	
+		
 		getUsers(conn);
 	}
 
 	public void getUsers(Connection dbConnection) throws SQLException, FileNotFoundException {
 		
-		String query = "select * from LIBPAGOS_USERS";
+		// TODO Escribir el query
+		String query = "escribir acá el query";
+		
 		Statement stmt = dbConnection.createStatement();
 		
 		ResultSet rs = stmt.executeQuery(query);
 		
-		// Convierte el resultset a un CSV
-		CsvHelper.convertToCsv(rs, "users.csv");
-		
-		System.out.println("Archivo generado con éxito");
+		// TODO Convertir el resultado a un CSV
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
