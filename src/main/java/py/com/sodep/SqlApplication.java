@@ -3,14 +3,16 @@ package py.com.sodep;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import py.com.sodep.utils.CsvHelper;
 
 @SpringBootApplication
 public class SqlApplication implements CommandLineRunner {
@@ -28,17 +30,23 @@ public class SqlApplication implements CommandLineRunner {
 		
 		System.out.println("Connection was successfull");	
 		
-		getUsers(conn);
+		getUsers(conn, arg0);
 	}
 
-	public void getUsers(Connection dbConnection) throws SQLException, FileNotFoundException {
+	public void getUsers(Connection conn, String[] args) throws SQLException, FileNotFoundException {
 		
 		// TODO Escribir el query
-		String query = "escribir acá el query";
+		// concatenando la columna con el argumento
+		// que corresponde al nombre de la columna.
+		// Utilizar ? como placeholder para los valores de la columna
+		String query = "";
 		
-		Statement stmt = dbConnection.createStatement();
+		PreparedStatement ps = conn.prepareStatement(query);
+	    // TODO Setear el valor por el cual se quiere buscar,
+		// usando el segundo argumento de la consola
 		
-		ResultSet rs = stmt.executeQuery(query);
+	    
+		ResultSet rs = ps.executeQuery();
 		
 		// TODO Convertir el resultado a un CSV
 		// El nombre del archivo CSV generado tiene que ser mi nombre
